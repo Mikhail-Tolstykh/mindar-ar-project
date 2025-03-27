@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>AR-Квест: копирование модели</title>
+    <title>AR-Квест</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -21,100 +21,77 @@
       <a-assets>
         <a-asset-item id="model1-asset" src="./assets/model1.glb"></a-asset-item>
         <a-asset-item id="model2-asset" src="./assets/model2.glb"></a-asset-item>
-        <audio id="sound1" src="./assets/sound1.mp3"></audio>
-        <audio id="sound2" src="./assets/sound2.mp3"></audio>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Пустой контейнер для "свободных" моделей -->
-      <a-entity id="model-holder"></a-entity>
+      <!-- Контейнер для моделей вне трекинга -->
+      <a-entity id="scene-models"></a-entity>
 
-      <!-- Первая метка -->
-      <a-entity id="target1" mindar-image-target="targetIndex: 0; autoHide: false">
-        <a-gltf-model 
-          id="model1" 
-          src="#model1-asset" 
-          position="0 0.1 0" 
-          scale="1 1 1" 
-          rotation="0 -90 0"
-          visible="false">
-        </a-gltf-model>
-      </a-entity>
+      <!-- Метка 1 -->
+      <a-entity id="target1" mindar-image-target="targetIndex: 0; autoHide: false"></a-entity>
 
-      <!-- Вторая метка -->
-      <a-entity id="target2" mindar-image-target="targetIndex: 1; autoHide: false">
-        <a-gltf-model 
-          id="model2" 
-          src="#model2-asset" 
-          position="0 0.1 0" 
-          scale="1 1 1" 
-          rotation="0 30 0"
-          visible="false">
-        </a-gltf-model>
-      </a-entity>
+      <!-- Метка 2 -->
+      <a-entity id="target2" mindar-image-target="targetIndex: 1; autoHide: false"></a-entity>
     </a-scene>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const modelHolder = document.querySelector("#model-holder");
         const target1 = document.querySelector("#target1");
         const target2 = document.querySelector("#target2");
+        const holder = document.querySelector("#scene-models");
 
-        let model1Placed = false;
-        let model2Placed = false;
+        let placed1 = false;
+        let placed2 = false;
 
         target1.addEventListener("targetFound", () => {
-          if (model1Placed) return;
+          if (placed1) return;
+          placed1 = true;
 
-          const newModel = document.createElement("a-gltf-model");
-          newModel.setAttribute("src", "#model1-asset");
-          newModel.setAttribute("scale", "1 1 1");
-          newModel.setAttribute("visible", "true");
+          const model = document.createElement("a-gltf-model");
+          model.setAttribute("src", "#model1-asset");
+          model.setAttribute("scale", "1 1 1");
+          model.setAttribute("visible", "true");
 
+          // Ждём немного, чтобы трекинг прогрузился
           setTimeout(() => {
             const obj3D = target1.object3D;
             const pos = new THREE.Vector3();
-            const rot = new THREE.Quaternion();
-
+            const quat = new THREE.Quaternion();
             obj3D.getWorldPosition(pos);
-            obj3D.getWorldQuaternion(rot);
+            obj3D.getWorldQuaternion(quat);
 
-            // смещаем влево по оси X
+            // Смещение немного влево
             pos.x -= 0.3;
 
-            modelHolder.appendChild(newModel);
-            newModel.object3D.position.copy(pos);
-            newModel.object3D.quaternion.copy(rot);
-
-            model1Placed = true;
+            holder.appendChild(model);
+            model.object3D.position.copy(pos);
+            model.object3D.quaternion.copy(quat);
           }, 300);
         });
 
         target2.addEventListener("targetFound", () => {
-          if (model2Placed) return;
+          if (placed2) return;
+          placed2 = true;
 
-          const newModel = document.createElement("a-gltf-model");
-          newModel.setAttribute("src", "#model2-asset");
-          newModel.setAttribute("scale", "1 1 1");
-          newModel.setAttribute("visible", "true");
+          const model = document.createElement("a-gltf-model");
+          model.setAttribute("src", "#model2-asset");
+          model.setAttribute("scale", "1 1 1");
+          model.setAttribute("visible", "true");
 
           setTimeout(() => {
             const obj3D = target2.object3D;
             const pos = new THREE.Vector3();
-            const rot = new THREE.Quaternion();
-
+            const quat = new THREE.Quaternion();
             obj3D.getWorldPosition(pos);
-            obj3D.getWorldQuaternion(rot);
+            obj3D.getWorldQuaternion(quat);
 
-            // смещаем вправо по оси X
+            // Смещение немного вправо
             pos.x += 0.3;
 
-            modelHolder.appendChild(newModel);
-            newModel.object3D.position.copy(pos);
-            newModel.object3D.quaternion.copy(rot);
-
-            model2Placed = true;
+            holder.appendChild(model);
+            model.object3D.position.copy(pos);
+            model.object3D.quaternion.copy(quat);
           }, 300);
         });
       });
