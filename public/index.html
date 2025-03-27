@@ -19,11 +19,8 @@
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
-        <!-- Модели -->
         <a-asset-item id="model1" src="./assets/model1.glb"></a-asset-item>
         <a-asset-item id="model2" src="./assets/model2.glb"></a-asset-item>
-
-        <!-- Звуки -->
         <audio id="sound1" src="./assets/sound1.mp3"></audio>
         <audio id="sound2" src="./assets/sound2.mp3"></audio>
       </a-assets>
@@ -33,20 +30,24 @@
       <!-- Первая метка -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0">
         <a-gltf-model 
+          id="model1" 
           src="#model1" 
           position="0 0.1 0" 
           scale="1 1 1" 
-          rotation="0 -90 0">
+          rotation="0 -90 0"
+          visible="false">
         </a-gltf-model>
       </a-entity>
 
       <!-- Вторая метка -->
       <a-entity id="target2" mindar-image-target="targetIndex: 1">
         <a-gltf-model 
+          id="model2" 
           src="#model2" 
           position="0 0.1 0" 
           scale="1 1 1" 
-          rotation="0 30 0">
+          rotation="0 30 0"
+          visible="false">
         </a-gltf-model>
       </a-entity>
 
@@ -57,16 +58,44 @@
         const sound1 = document.querySelector("#sound1");
         const sound2 = document.querySelector("#sound2");
 
+        const model1 = document.querySelector("#model1");
+        const model2 = document.querySelector("#model2");
+
         const target1 = document.querySelector("#target1");
         const target2 = document.querySelector("#target2");
 
+        let playing1 = false;
+        let playing2 = false;
+
         target1.addEventListener("targetFound", () => {
-          sound1.play();
+          if (!playing1) {
+            model1.setAttribute("visible", true);
+            sound1.play();
+            playing1 = true;
+
+            sound1.onended = () => {
+              model1.setAttribute("visible", false);
+              playing1 = false;
+            };
+          }
         });
 
         target2.addEventListener("targetFound", () => {
-          sound2.play();
+          if (!playing2) {
+            model2.setAttribute("visible", true);
+            sound2.play();
+            playing2 = true;
+
+            sound2.onended = () => {
+              model2.setAttribute("visible", false);
+              playing2 = false;
+            };
+          }
         });
+
+        // НЕ скрываем модель при потере метки
+        target1.addEventListener("targetLost", (e) => {});
+        target2.addEventListener("targetLost", (e) => {});
       });
     </script>
   </body>
