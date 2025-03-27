@@ -20,87 +20,57 @@
     >
       <a-assets>
         <a-asset-item id="model1" src="./assets/model1.glb"></a-asset-item>
-        <a-asset-item id="model2" src="./assets/model2.glb"></a-asset-item>
         <audio id="sound1" src="./assets/sound1.mp3"></audio>
-        <audio id="sound2" src="./assets/sound2.mp3"></audio>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- МЕТКА 1 -->
-      <a-entity mindar-image-target="targetIndex: 0" stay-visible-until-sound>
+      <a-entity mindar-image-target="targetIndex: 0" id="target0" stay-until-sound>
         <a-gltf-model 
-          class="ar-model"
+          id="model1"
           src="#model1" 
           position="0 0.1 0" 
-          scale="0.2 0.2 0.2" 
+          scale="1 1 1" 
           rotation="-90 0 0"
           visible="false"
           animation__hide="property: scale; to: 0 0 0; dur: 500; startEvents: hide-model">
         </a-gltf-model>
-        <a-entity class="ar-sound" sound="src: #sound1; autoplay: false;"></a-entity>
-      </a-entity>
-
-      <!-- МЕТКА 2 -->
-      <a-entity mindar-image-target="targetIndex: 1" stay-visible-until-sound>
-        <a-gltf-model 
-          class="ar-model"
-          src="#model2" 
-          position="0 0.1 0" 
-          scale="0.2 0.2 0.2" 
-          rotation="-90 0 0"
-          visible="false"
-          animation__hide="property: scale; to: 0 0 0; dur: 500; startEvents: hide-model">
-        </a-gltf-model>
-        <a-entity class="ar-sound" sound="src: #sound2; autoplay: false;"></a-entity>
+        <a-entity id="sound1" sound="src: #sound1; autoplay: false;"></a-entity>
       </a-entity>
     </a-scene>
 
     <script>
-      AFRAME.registerComponent("stay-visible-until-sound", {
+      AFRAME.registerComponent("stay-until-sound", {
         init: function () {
-          const marker = this.el;
-          const model = marker.querySelector(".ar-model");
-          const sound = marker.querySelector(".ar-sound");
+          const el = this.el;
+          const model = document.querySelector("#model1");
+          const sound = document.querySelector("#sound1");
 
           let isPlaying = false;
 
-          marker.addEventListener("targetFound", () => {
+          el.addEventListener("targetFound", () => {
             if (!isPlaying) {
+              model.setAttribute("scale", "1 1 1");
               model.setAttribute("visible", true);
-              model.setAttribute("scale", "0.2 0.2 0.2");
-
-              // Нужно для браузеров, которые не воспроизводят без действия пользователя
               sound.components.sound.playSound();
-
               isPlaying = true;
 
-              const duration = sound.components.sound.pool.children[0]?.duration || 3; // запасной вариант
-
-              setTimeout(() => {
+              sound.addEventListener("sound-ended", () => {
                 model.emit("hide-model");
                 setTimeout(() => {
                   model.setAttribute("visible", false);
-                  model.setAttribute("scale", "0.2 0.2 0.2");
+                  model.setAttribute("scale", "1 1 1");
                   isPlaying = false;
                 }, 500);
-              }, duration * 1000);
+              });
             }
           });
 
-          marker.addEventListener("targetLost", () => {
-            // не скрываем модель
+          el.addEventListener("targetLost", () => {
+            // ничего не делаем
           });
         }
       });
-      document.querySelector("#startButton").addEventListener("click", () => {
-  const scene = document.querySelector("a-scene");
-  scene.style.zIndex = "1";
-  document.querySelector("#startButton").style.display = "none";
-});
     </script>
-    <button id="startButton" style="position: absolute; z-index: 999; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 16px 32px; font-size: 18px;">
-      Нажми, чтобы начать
-    </button>
   </body>
 </html>
