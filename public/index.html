@@ -54,9 +54,6 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const sound1 = document.querySelector("#sound1");
-        const sound2 = document.querySelector("#sound2");
-
         const model1 = document.querySelector("#model1");
         const model2 = document.querySelector("#model2");
 
@@ -65,25 +62,13 @@
 
         target1.addEventListener("targetFound", () => {
           model1.setAttribute("visible", true);
-          sound1.currentTime = 0;
-          sound1.play();
-
-          setTimeout(() => {
-            model1.setAttribute("visible", false);
-          }, sound1.duration * 1000 || 3000); // если duration не определится
         });
 
         target2.addEventListener("targetFound", () => {
           model2.setAttribute("visible", true);
-          sound2.currentTime = 0;
-          sound2.play();
-
-          setTimeout(() => {
-            model2.setAttribute("visible", false);
-          }, sound2.duration * 1000 || 3000);
         });
 
-        // Не скрываем при потере метки
+        // НЕ скрываем при потере метки
         target1.addEventListener("targetLost", () => {});
         target2.addEventListener("targetLost", () => {});
       });
