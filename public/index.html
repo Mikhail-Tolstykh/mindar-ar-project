@@ -1,38 +1,33 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>AR-модель без метки</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <title>WebXR AR — без метки</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
     <style>
-      body, html { margin: 0; overflow: hidden; height: 100%; }
+      body { margin: 0; overflow: hidden; }
     </style>
   </head>
   <body>
     <a-scene
-      mindar-image="imageTargetSrc: ./assets/empty.mind;"  
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights: true"
+      embedded
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
+      renderer="logarithmicDepthBuffer: true;"
+      arjs="sourceType: webcam; debugUIEnabled: false;"
     >
       <a-assets>
         <a-asset-item id="model" src="./assets/model1.glb"></a-asset-item>
       </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera-static></a-camera-static>
 
-      <!-- Контейнер без привязки к метке -->
-      <a-entity position="0 0 -1">
-        <a-gltf-model
-          src="#model"
-          scale="0.5 0.5 0.5"
-          rotation="0 0 0"
-          visible="true">
-        </a-gltf-model>
-      </a-entity>
+      <a-gltf-model
+        src="#model"
+        scale="0.5 0.5 0.5"
+        position="0 0 -2"
+        rotation="0 180 0"
+      ></a-gltf-model>
     </a-scene>
   </body>
 </html>
