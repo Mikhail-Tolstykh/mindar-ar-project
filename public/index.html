@@ -19,57 +19,54 @@
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
+        <!-- Модели -->
         <a-asset-item id="model1" src="./assets/model1.glb"></a-asset-item>
+        <a-asset-item id="model2" src="./assets/model2.glb"></a-asset-item>
+
+        <!-- Звуки -->
         <audio id="sound1" src="./assets/sound1.mp3"></audio>
+        <audio id="sound2" src="./assets/sound2.mp3"></audio>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 0" id="target0" stay-until-sound>
+      <!-- Первая метка -->
+      <a-entity id="target1" mindar-image-target="targetIndex: 0">
         <a-gltf-model 
-          id="model1"
           src="#model1" 
           position="0 0.1 0" 
           scale="1 1 1" 
-          rotation="-90 0 0"
-          visible="false"
-          animation__hide="property: scale; to: 0 0 0; dur: 500; startEvents: hide-model">
+          rotation="0 -90 0">
         </a-gltf-model>
-        <a-entity id="sound1" sound="src: #sound1; autoplay: false;"></a-entity>
       </a-entity>
+
+      <!-- Вторая метка -->
+      <a-entity id="target2" mindar-image-target="targetIndex: 1">
+        <a-gltf-model 
+          src="#model2" 
+          position="0 0.1 0" 
+          scale="1 1 1" 
+          rotation="0 30 0">
+        </a-gltf-model>
+      </a-entity>
+
     </a-scene>
 
     <script>
-      AFRAME.registerComponent("stay-until-sound", {
-        init: function () {
-          const el = this.el;
-          const model = document.querySelector("#model1");
-          const sound = document.querySelector("#sound1");
+      document.addEventListener("DOMContentLoaded", () => {
+        const sound1 = document.querySelector("#sound1");
+        const sound2 = document.querySelector("#sound2");
 
-          let isPlaying = false;
+        const target1 = document.querySelector("#target1");
+        const target2 = document.querySelector("#target2");
 
-          el.addEventListener("targetFound", () => {
-            if (!isPlaying) {
-              model.setAttribute("scale", "1 1 1");
-              model.setAttribute("visible", true);
-              sound.components.sound.playSound();
-              isPlaying = true;
+        target1.addEventListener("targetFound", () => {
+          sound1.play();
+        });
 
-              sound.addEventListener("sound-ended", () => {
-                model.emit("hide-model");
-                setTimeout(() => {
-                  model.setAttribute("visible", false);
-                  model.setAttribute("scale", "1 1 1");
-                  isPlaying = false;
-                }, 500);
-              });
-            }
-          });
-
-          el.addEventListener("targetLost", () => {
-            // ничего не делаем
-          });
-        }
+        target2.addEventListener("targetFound", () => {
+          sound2.play();
+        });
       });
     </script>
   </body>
