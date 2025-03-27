@@ -2,29 +2,37 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Тестовая модель перед камерой</title>
+    <title>AR-модель без метки</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
       body, html { margin: 0; overflow: hidden; height: 100%; }
     </style>
   </head>
   <body>
-    <a-scene>
+    <a-scene
+      mindar-image="imageTargetSrc: ./assets/empty.mind;"  
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights: true"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
       <a-assets>
         <a-asset-item id="model" src="./assets/model1.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Модель сразу перед камерой -->
-      <a-gltf-model
-        src="#model"
-        position="0 0 -1"  
-        scale="1 1 1"
-        rotation="0 0 0"
-        visible="true">
-      </a-gltf-model>
+      <!-- Контейнер без привязки к метке -->
+      <a-entity position="0 0 -1">
+        <a-gltf-model
+          src="#model"
+          scale="0.5 0.5 0.5"
+          rotation="0 0 0"
+          visible="true">
+        </a-gltf-model>
+      </a-entity>
     </a-scene>
   </body>
 </html>
