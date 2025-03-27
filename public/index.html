@@ -30,23 +30,25 @@
       <!-- Первая метка -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0">
         <a-gltf-model 
-        id="model1" 
-        src="#model1-asset" 
-        position="0 0.1 0" 
-        scale="0.2 0.2 0.2" 
-        rotation="0 -90 0">
-      </a-gltf-model>
+          id="model1" 
+          src="#model1-asset" 
+          position="0 0.1 0" 
+          scale="1 1 1" 
+          rotation="0 -90 0"
+          visible="false">
+        </a-gltf-model>
       </a-entity>
 
       <!-- Вторая метка -->
       <a-entity id="target2" mindar-image-target="targetIndex: 1">
         <a-gltf-model 
-  id="model2" 
-  src="#model2-asset" 
-  position="0 0.1 0" 
-  scale="0.2 0.2 0.2" 
-  rotation="0 30 0">
-</a-gltf-model>
+          id="model2" 
+          src="#model2-asset" 
+          position="0 0.1 0" 
+          scale="1 1 1" 
+          rotation="0 30 0"
+          visible="false">
+        </a-gltf-model>
       </a-entity>
     </a-scene>
 
@@ -54,18 +56,21 @@
       document.addEventListener("DOMContentLoaded", () => {
         const model1 = document.querySelector("#model1");
         const model2 = document.querySelector("#model2");
-    
+
         const target1 = document.querySelector("#target1");
         const target2 = document.querySelector("#target2");
-    
+
         target1.addEventListener("targetFound", () => {
-         model1.setAttribute("scale", "1 1 1");
-          }); 
-    
-          target2.addEventListener("targetFound", () => {
-           model2.setAttribute("scale", "1 1 1");
-          });
-    
+          model1.setAttribute("visible", true);
+        });
+
+        target2.addEventListener("targetFound", () => {
+          model2.setAttribute("visible", true);
+        });
+
+        // НЕ скрываем при потере метки
+        target1.addEventListener("targetLost", () => {});
+        target2.addEventListener("targetLost", () => {});
       });
     </script>
   </body>
