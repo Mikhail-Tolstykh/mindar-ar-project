@@ -63,38 +63,29 @@
         const target1 = document.querySelector("#target1");
         const target2 = document.querySelector("#target2");
 
-        let model1Ready = false;
-        let model2Ready = false;
-
-        model1.addEventListener("model-loaded", () => {
-          model1Ready = true;
-        });
-
-        model2.addEventListener("model-loaded", () => {
-          model2Ready = true;
-        });
-
         target1.addEventListener("targetFound", () => {
-          if (model1Ready) {
-            model1.setAttribute("visible", true);
-            sound1.currentTime = 0;
-            sound1.play();
-            sound1.onended = () => {
-              model1.setAttribute("visible", false);
-            };
-          }
+          model1.setAttribute("visible", true);
+          sound1.currentTime = 0;
+          sound1.play();
+
+          setTimeout(() => {
+            model1.setAttribute("visible", false);
+          }, sound1.duration * 1000 || 3000); // если duration не определится
         });
 
         target2.addEventListener("targetFound", () => {
-          if (model2Ready) {
-            model2.setAttribute("visible", true);
-            sound2.currentTime = 0;
-            sound2.play();
-            sound2.onended = () => {
-              model2.setAttribute("visible", false);
-            };
-          }
+          model2.setAttribute("visible", true);
+          sound2.currentTime = 0;
+          sound2.play();
+
+          setTimeout(() => {
+            model2.setAttribute("visible", false);
+          }, sound2.duration * 1000 || 3000);
         });
+
+        // Не скрываем при потере метки
+        target1.addEventListener("targetLost", () => {});
+        target2.addEventListener("targetLost", () => {});
       });
     </script>
   </body>
