@@ -93,6 +93,14 @@
           });
         }
       });
+      document.querySelector("#startButton").addEventListener("click", () => {
+  const scene = document.querySelector("a-scene");
+  scene.style.zIndex = "1";
+  document.querySelector("#startButton").style.display = "none";
+});
     </script>
+    <button id="startButton" style="position: absolute; z-index: 999; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 16px 32px; font-size: 18px;">
+      Нажми, чтобы начать
+    </button>
   </body>
 </html>
