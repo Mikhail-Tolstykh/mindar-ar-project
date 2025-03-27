@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -29,67 +28,68 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <!-- МЕТКА 1 -->
-      <a-entity mindar-image-target="targetIndex: 0" stay-until-sound="model: #model1; sound: #sound1">
+      <a-entity mindar-image-target="targetIndex: 0" stay-visible-until-sound>
         <a-gltf-model 
-          id="model1"
+          class="ar-model"
           src="#model1" 
           position="0 0.1 0" 
-          scale="1 1 1" 
+          scale="0.2 0.2 0.2" 
           rotation="-90 0 0"
           visible="false"
           animation__hide="property: scale; to: 0 0 0; dur: 500; startEvents: hide-model">
         </a-gltf-model>
-        <a-entity id="sound1" sound="src: #sound1; autoplay: false;"></a-entity>
+        <a-entity class="ar-sound" sound="src: #sound1; autoplay: false;"></a-entity>
       </a-entity>
 
       <!-- МЕТКА 2 -->
-      <a-entity mindar-image-target="targetIndex: 1" stay-until-sound="model: #model2; sound: #sound2">
+      <a-entity mindar-image-target="targetIndex: 1" stay-visible-until-sound>
         <a-gltf-model 
-          id="model2"
+          class="ar-model"
           src="#model2" 
           position="0 0.1 0" 
-          scale="1 1 1" 
+          scale="0.2 0.2 0.2" 
           rotation="-90 0 0"
           visible="false"
           animation__hide="property: scale; to: 0 0 0; dur: 500; startEvents: hide-model">
         </a-gltf-model>
-        <a-entity id="sound2" sound="src: #sound2; autoplay: false;"></a-entity>
+        <a-entity class="ar-sound" sound="src: #sound2; autoplay: false;"></a-entity>
       </a-entity>
     </a-scene>
 
     <script>
-      AFRAME.registerComponent("stay-until-sound", {
-        schema: {
-          model: { type: "selector" },
-          sound: { type: "selector" }
-        },
+      AFRAME.registerComponent("stay-visible-until-sound", {
         init: function () {
-          const el = this.el;
-          const model = this.data.model;
-          const sound = this.data.sound;
+          const marker = this.el;
+          const model = marker.querySelector(".ar-model");
+          const sound = marker.querySelector(".ar-sound");
 
           let isPlaying = false;
 
-          el.addEventListener("targetFound", () => {
+          marker.addEventListener("targetFound", () => {
             if (!isPlaying) {
-              model.setAttribute("scale", "1 1 1");
               model.setAttribute("visible", true);
+              model.setAttribute("scale", "0.2 0.2 0.2");
+
+              // Нужно для браузеров, которые не воспроизводят без действия пользователя
               sound.components.sound.playSound();
+
               isPlaying = true;
 
-              sound.addEventListener("sound-ended", () => {
+              const duration = sound.components.sound.pool.children[0]?.duration || 3; // запасной вариант
+
+              setTimeout(() => {
                 model.emit("hide-model");
                 setTimeout(() => {
                   model.setAttribute("visible", false);
                   model.setAttribute("scale", "0.2 0.2 0.2");
                   isPlaying = false;
                 }, 500);
-              });
+              }, duration * 1000);
             }
           });
 
-          el.addEventListener("targetLost", () => {
-            // Не скрываем модель при потере
+          marker.addEventListener("targetLost", () => {
+            // не скрываем модель
           });
         }
       });
