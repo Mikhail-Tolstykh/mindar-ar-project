@@ -58,17 +58,6 @@
         const target1 = document.querySelector("#target1");
         const target2 = document.querySelector("#target2");
     
-        let model1Ready = false;
-        let model2Ready = false;
-    
-        model1.addEventListener("model-loaded", () => {
-          model1Ready = true;
-        });
-    
-        model2.addEventListener("model-loaded", () => {
-          model2Ready = true;
-        });
-    
         target1.addEventListener("targetFound", () => {
          model1.setAttribute("scale", "1 1 1");
           }); 
@@ -77,8 +66,6 @@
            model2.setAttribute("scale", "1 1 1");
           });
     
-        target1.addEventListener("targetLost", () => {});
-        target2.addEventListener("targetLost", () => {});
       });
     </script>
   </body>
