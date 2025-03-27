@@ -33,27 +33,33 @@
       <!-- Первая метка -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0">
         <a-gltf-model 
+          id="model1"
           src="#model1-asset" 
           position="0 0.1 0" 
-          scale="0.8 0.8 0.8" 
-          rotation="0 -90 0">
+          scale="0.5 0.5 0.5" 
+          rotation="0 -90 0"
+          visible="false">
         </a-gltf-model>
       </a-entity>
 
       <!-- Вторая метка -->
       <a-entity id="target2" mindar-image-target="targetIndex: 1">
         <a-gltf-model 
+          id="model2"
           src="#model2-asset" 
           position="0 0.1 0" 
-          scale="0.8 0.8 0.8" 
-          rotation="0 30 0">
+          scale="0.5 0.5 0.5" 
+          rotation="0 30 0"
+          visible="false">
         </a-gltf-model>
       </a-entity>
-
     </a-scene>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        const model1 = document.querySelector("#model1");
+        const model2 = document.querySelector("#model2");
+
         const sound1 = document.querySelector("#sound1");
         const sound2 = document.querySelector("#sound2");
 
@@ -61,11 +67,21 @@
         const target2 = document.querySelector("#target2");
 
         target1.addEventListener("targetFound", () => {
+          model1.setAttribute("visible", true);
           sound1.play();
         });
 
         target2.addEventListener("targetFound", () => {
+          model2.setAttribute("visible", true);
           sound2.play();
+        });
+
+        sound1.addEventListener("ended", () => {
+          model1.setAttribute("visible", false);
+        });
+
+        sound2.addEventListener("ended", () => {
+          model2.setAttribute("visible", false);
         });
       });
     </script>
