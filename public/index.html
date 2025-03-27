@@ -28,31 +28,43 @@
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Метка 1 -->
+      <!-- Первая метка -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0">
         <a-gltf-model 
           id="model1"
           src="#model1-asset" 
           position="0 0.1 0" 
-          scale="0 0 0"
+          scale="0.5 0.5 0.5" 
           rotation="0 -90 0"
           visible="false">
-          <a-animation id="show1" attribute="scale" from="0 0 0" to="0.5 0.5 0.5" dur="200" begin="show1"></a-animation>
-          <a-animation id="hide1" attribute="scale" from="0.5 0.5 0.5" to="0 0 0" dur="200" begin="hide1"></a-animation>
+          <a-animation
+            id="hide1"
+            attribute="scale"
+            from="0.5 0.5 0.5"
+            to="0 0 0"
+            dur="500"
+            begin="hide1">
+          </a-animation>
         </a-gltf-model>
       </a-entity>
 
-      <!-- Метка 2 -->
+      <!-- Вторая метка -->
       <a-entity id="target2" mindar-image-target="targetIndex: 1">
         <a-gltf-model 
           id="model2"
           src="#model2-asset" 
           position="0 0.1 0" 
-          scale="0 0 0"
+          scale="0.5 0.5 0.5" 
           rotation="0 30 0"
           visible="false">
-          <a-animation id="show2" attribute="scale" from="0 0 0" to="0.5 0.5 0.5" dur="200" begin="show2"></a-animation>
-          <a-animation id="hide2" attribute="scale" from="0.5 0.5 0.5" to="0 0 0" dur="200" begin="hide2"></a-animation>
+          <a-animation
+            id="hide2"
+            attribute="scale"
+            from="0.5 0.5 0.5"
+            to="0 0 0"
+            dur="500"
+            begin="hide2">
+          </a-animation>
         </a-gltf-model>
       </a-entity>
     </a-scene>
@@ -70,13 +82,13 @@
 
         target1.addEventListener("targetFound", () => {
           model1.setAttribute("visible", true);
-          model1.emit("show1");
+          model1.setAttribute("scale", "0.5 0.5 0.5"); // на случай повторного вызова
           sound1.play();
         });
 
         target2.addEventListener("targetFound", () => {
           model2.setAttribute("visible", true);
-          model2.emit("show2");
+          model2.setAttribute("scale", "0.5 0.5 0.5");
           sound2.play();
         });
 
