@@ -19,32 +19,33 @@
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
+        <!-- Модели -->
         <a-asset-item id="model1-asset" src="./assets/model1.glb"></a-asset-item>
         <a-asset-item id="model2-asset" src="./assets/model2.glb"></a-asset-item>
-
+        <!-- Звуки -->
         <audio id="sound1" src="./assets/sound1.mp3"></audio>
         <audio id="sound2" src="./assets/sound2.mp3"></audio>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Первая метка -->
+      <!-- Метка 1 -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0">
         <a-entity 
           id="model1-container"
           position="0 0.1 0"
-          scale="0.5 0.5 0.5"
+          scale="0 0 0"
           visible="false">
           <a-gltf-model src="#model1-asset" rotation="0 -90 0"></a-gltf-model>
         </a-entity>
       </a-entity>
 
-      <!-- Вторая метка -->
+      <!-- Метка 2 -->
       <a-entity id="target2" mindar-image-target="targetIndex: 1">
         <a-entity 
           id="model2-container"
           position="0 0.1 0"
-          scale="0.5 0.5 0.5"
+          scale="0 0 0"
           visible="false">
           <a-gltf-model src="#model2-asset" rotation="0 30 0"></a-gltf-model>
         </a-entity>
@@ -53,50 +54,43 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const model1 = document.querySelector("#model1-container");
-        const model2 = document.querySelector("#model2-container");
+        const numberOfTargets = 2; // 🔁 Укажи общее количество меток (можно увеличить)
 
-        const sound1 = document.querySelector("#sound1");
-        const sound2 = document.querySelector("#sound2");
+        for (let i = 1; i <= numberOfTargets; i++) {
+          const target = document.querySelector(`#target${i}`);
+          const model = document.querySelector(`#model${i}-container`);
+          const sound = document.querySelector(`#sound${i}`);
 
-        const target1 = document.querySelector("#target1");
-        const target2 = document.querySelector("#target2");
+          if (!target || !model || !sound) continue;
 
-        target1.addEventListener("targetFound", () => {
-          model1.setAttribute("visible", true);
-          model1.setAttribute("scale", "0.5 0.5 0.5");
-          sound1.play();
-        });
-
-        target2.addEventListener("targetFound", () => {
-          model2.setAttribute("visible", true);
-          model2.setAttribute("scale", "0.5 0.5 0.5");
-          sound2.play();
-        });
-
-        sound1.addEventListener("ended", () => {
-          model1.setAttribute("animation__hide", {
-            property: "scale",
-            to: "0 0 0",
-            dur: 500,
-            easing: "easeInOutQuad"
+          // Появление
+          target.addEventListener("targetFound", () => {
+            model.setAttribute("visible", true);
+            model.removeAttribute("animation__hide"); // сбрасываем прошлое
+            model.setAttribute("animation__show", {
+              property: "scale",
+              from: "0 0 0",
+              to: "0.5 0.5 0.5",
+              dur: 500,
+              easing: "easeOutElastic"
+            });
+            sound.play();
           });
-          setTimeout(() => {
-            model1.setAttribute("visible", false);
-          }, 600);
-        });
 
-        sound2.addEventListener("ended", () => {
-          model2.setAttribute("animation__hide", {
-            property: "scale",
-            to: "0 0 0",
-            dur: 500,
-            easing: "easeInOutQuad"
+          // Исчезновение
+          sound.addEventListener("ended", () => {
+            model.removeAttribute("animation__show"); // сбрасываем
+            model.setAttribute("animation__hide", {
+              property: "scale",
+              to: "0 0 0",
+              dur: 500,
+              easing: "easeInOutQuad"
+            });
+            setTimeout(() => {
+              model.setAttribute("visible", false);
+            }, 600);
           });
-          setTimeout(() => {
-            model2.setAttribute("visible", false);
-          }, 600);
-        });
+        }
       });
     </script>
   </body>
