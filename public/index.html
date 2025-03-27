@@ -30,25 +30,23 @@
       <!-- Первая метка -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0">
         <a-gltf-model 
-          id="model1" 
-          src="#model1" 
-          position="0 0.1 0" 
-          scale="1 1 1" 
-          rotation="0 -90 0"
-          visible="false">
-        </a-gltf-model>
+        id="model1" 
+        src="#model1" 
+        position="0 0.1 0" 
+        scale="0 0 0" 
+        rotation="0 -90 0">
+      </a-gltf-model>
       </a-entity>
 
       <!-- Вторая метка -->
       <a-entity id="target2" mindar-image-target="targetIndex: 1">
         <a-gltf-model 
-          id="model2" 
-          src="#model2" 
-          position="0 0.1 0" 
-          scale="1 1 1" 
-          rotation="0 30 0"
-          visible="false">
-        </a-gltf-model>
+  id="model2" 
+  src="#model2" 
+  position="0 0.1 0" 
+  scale="0 0 0" 
+  rotation="0 30 0">
+</a-gltf-model>
       </a-entity>
     </a-scene>
 
@@ -72,16 +70,12 @@
         });
     
         target1.addEventListener("targetFound", () => {
-          if (model1Ready) {
-            model1.setAttribute("visible", true);
-          }
-        });
+         model1.setAttribute("scale", "1 1 1");
+          }); 
     
-        target2.addEventListener("targetFound", () => {
-          if (model2Ready) {
-            model2.setAttribute("visible", true);
-          }
-        });
+          target2.addEventListener("targetFound", () => {
+           model2.setAttribute("scale", "1 1 1");
+          });
     
         target1.addEventListener("targetLost", () => {});
         target2.addEventListener("targetLost", () => {});
