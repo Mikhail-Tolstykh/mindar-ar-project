@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>AR-Квест</title>
+    <title>AR-Квест (2 модели, фиксированные)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -21,56 +21,79 @@
       <a-assets>
         <a-asset-item id="model1-asset" src="./assets/model1.glb"></a-asset-item>
         <a-asset-item id="model2-asset" src="./assets/model2.glb"></a-asset-item>
-        <audio id="sound1" src="./assets/sound1.mp3"></audio>
-        <audio id="sound2" src="./assets/sound2.mp3"></audio>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Первая метка -->
-      <a-entity id="target1" mindar-image-target="targetIndex: 0; autoHide: false">
-        <a-gltf-model 
-          id="model1" 
-          src="#model1-asset" 
-          position="0 0.1 0" 
-          scale="1 1 1" 
-          rotation="0 -90 0"
-          visible="false">
-        </a-gltf-model>
-      </a-entity>
+      <!-- Контейнер для свободных моделей -->
+      <a-entity id="model-holder"></a-entity>
 
-      <!-- Вторая метка -->
-      <a-entity id="target2" mindar-image-target="targetIndex: 1; autoHide: false">
-        <a-gltf-model 
-          id="model2" 
-          src="#model2-asset" 
-          position="0 0.1 0" 
-          scale="1 1 1" 
-          rotation="0 30 0"
-          visible="false">
-        </a-gltf-model>
-      </a-entity>
+      <!-- Метка 1 -->
+      <a-entity id="target1" mindar-image-target="targetIndex: 0"></a-entity>
+
+      <!-- Метка 2 -->
+      <a-entity id="target2" mindar-image-target="targetIndex: 1"></a-entity>
     </a-scene>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const model1 = document.querySelector("#model1");
-        const model2 = document.querySelector("#model2");
+        const modelHolder = document.querySelector("#model-holder");
 
         const target1 = document.querySelector("#target1");
         const target2 = document.querySelector("#target2");
 
+        let model1Placed = false;
+        let model2Placed = false;
+
         target1.addEventListener("targetFound", () => {
-          model1.setAttribute("visible", true);
+          if (model1Placed) return;
+
+          const newModel = document.createElement("a-gltf-model");
+          newModel.setAttribute("src", "#model1-asset");
+          newModel.setAttribute("scale", "1 1 1");
+
+          setTimeout(() => {
+            const obj3D = target1.object3D;
+
+            const pos = new THREE.Vector3();
+            const rot = new THREE.Quaternion();
+
+            obj3D.getWorldPosition(pos);
+            obj3D.getWorldQuaternion(rot);
+
+            modelHolder.appendChild(newModel);
+
+            newModel.object3D.position.copy(pos);
+            newModel.object3D.quaternion.copy(rot);
+
+            model1Placed = true;
+          }, 100);
         });
 
         target2.addEventListener("targetFound", () => {
-          model2.setAttribute("visible", true);
-        });
+          if (model2Placed) return;
 
-        // НЕ скрываем при потере метки
-        target1.addEventListener("targetLost", () => {});
-        target2.addEventListener("targetLost", () => {});
+          const newModel = document.createElement("a-gltf-model");
+          newModel.setAttribute("src", "#model2-asset");
+          newModel.setAttribute("scale", "1 1 1");
+
+          setTimeout(() => {
+            const obj3D = target2.object3D;
+
+            const pos = new THREE.Vector3();
+            const rot = new THREE.Quaternion();
+
+            obj3D.getWorldPosition(pos);
+            obj3D.getWorldQuaternion(rot);
+
+            modelHolder.appendChild(newModel);
+
+            newModel.object3D.position.copy(pos);
+            newModel.object3D.quaternion.copy(rot);
+
+            model2Placed = true;
+          }, 100);
+        });
       });
     </script>
   </body>
