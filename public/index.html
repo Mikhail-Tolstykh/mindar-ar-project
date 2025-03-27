@@ -19,38 +19,40 @@
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
-        <!-- Модели -->
         <a-asset-item id="model1-asset" src="./assets/model1.glb"></a-asset-item>
         <a-asset-item id="model2-asset" src="./assets/model2.glb"></a-asset-item>
 
-        <!-- Звуки -->
         <audio id="sound1" src="./assets/sound1.mp3"></audio>
         <audio id="sound2" src="./assets/sound2.mp3"></audio>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Первая метка -->
+      <!-- Метка 1 -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0">
         <a-gltf-model 
           id="model1"
           src="#model1-asset" 
           position="0 0.1 0" 
-          scale="0.5 0.5 0.5" 
+          scale="0 0 0"
           rotation="0 -90 0"
           visible="false">
+          <a-animation id="show1" attribute="scale" from="0 0 0" to="0.5 0.5 0.5" dur="500" begin="show1"></a-animation>
+          <a-animation id="hide1" attribute="scale" from="0.5 0.5 0.5" to="0 0 0" dur="500" begin="hide1"></a-animation>
         </a-gltf-model>
       </a-entity>
 
-      <!-- Вторая метка -->
+      <!-- Метка 2 -->
       <a-entity id="target2" mindar-image-target="targetIndex: 1">
         <a-gltf-model 
           id="model2"
           src="#model2-asset" 
           position="0 0.1 0" 
-          scale="0.5 0.5 0.5" 
+          scale="0 0 0"
           rotation="0 30 0"
           visible="false">
+          <a-animation id="show2" attribute="scale" from="0 0 0" to="0.5 0.5 0.5" dur="500" begin="show2"></a-animation>
+          <a-animation id="hide2" attribute="scale" from="0.5 0.5 0.5" to="0 0 0" dur="500" begin="hide2"></a-animation>
         </a-gltf-model>
       </a-entity>
     </a-scene>
@@ -68,20 +70,28 @@
 
         target1.addEventListener("targetFound", () => {
           model1.setAttribute("visible", true);
+          model1.emit("show1");
           sound1.play();
         });
 
         target2.addEventListener("targetFound", () => {
           model2.setAttribute("visible", true);
+          model2.emit("show2");
           sound2.play();
         });
 
         sound1.addEventListener("ended", () => {
-          model1.setAttribute("visible", false);
+          model1.emit("hide1");
+          setTimeout(() => {
+            model1.setAttribute("visible", false);
+          }, 600);
         });
 
         sound2.addEventListener("ended", () => {
-          model2.setAttribute("visible", false);
+          model2.emit("hide2");
+          setTimeout(() => {
+            model2.setAttribute("visible", false);
+          }, 600);
         });
       });
     </script>
