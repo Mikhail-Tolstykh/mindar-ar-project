@@ -35,7 +35,7 @@
           position="0 0.1 0" 
           scale="1 1 1" 
           rotation="0 -90 0"
-          >
+          visible="false">
         </a-gltf-model>
       </a-entity>
 
@@ -47,7 +47,7 @@
           position="0 0.1 0" 
           scale="1 1 1" 
           rotation="0 30 0"
-          >
+          visible="false">
         </a-gltf-model>
       </a-entity>
     </a-scene>
@@ -56,19 +56,33 @@
       document.addEventListener("DOMContentLoaded", () => {
         const model1 = document.querySelector("#model1");
         const model2 = document.querySelector("#model2");
-
+    
         const target1 = document.querySelector("#target1");
         const target2 = document.querySelector("#target2");
-
+    
+        let model1Ready = false;
+        let model2Ready = false;
+    
+        model1.addEventListener("model-loaded", () => {
+          model1Ready = true;
+        });
+    
+        model2.addEventListener("model-loaded", () => {
+          model2Ready = true;
+        });
+    
         target1.addEventListener("targetFound", () => {
-          model1.setAttribute("visible", true);
+          if (model1Ready) {
+            model1.setAttribute("visible", true);
+          }
         });
-
+    
         target2.addEventListener("targetFound", () => {
-          model2.setAttribute("visible", true);
+          if (model2Ready) {
+            model2.setAttribute("visible", true);
+          }
         });
-
-        // НЕ скрываем при потере метки
+    
         target1.addEventListener("targetLost", () => {});
         target2.addEventListener("targetLost", () => {});
       });
