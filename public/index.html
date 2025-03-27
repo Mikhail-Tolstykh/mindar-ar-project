@@ -1,75 +1,71 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>AR.js — модель остаётся после метки</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8" />
+    <title>AR-Квест</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
-      body { margin: 0; overflow: hidden; }
+      body, html { margin: 0; overflow: hidden; height: 100%; }
     </style>
   </head>
   <body>
     <a-scene
-      embedded
+      mindar-image="imageTargetSrc: ./assets/targets.mind;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights: true"
       vr-mode-ui="enabled: false"
-      renderer="logarithmicDepthBuffer: true;"
-      arjs="sourceType: webcam; debugUIEnabled: false;"
+      device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
-        <a-asset-item id="model" src="./assets/model1.glb"></a-asset-item>
+        <!-- Модели -->
+        <a-asset-item id="model1-asset" src="./assets/model1.glb"></a-asset-item>
+        <a-asset-item id="model2-asset" src="./assets/model2.glb"></a-asset-item>
+
+        <!-- Звуки -->
+        <audio id="sound1" src="./assets/sound1.mp3"></audio>
+        <audio id="sound2" src="./assets/sound2.mp3"></audio>
       </a-assets>
 
-      <!-- Камера -->
-      <a-camera-static></a-camera-static>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Контейнер для свободной модели -->
-      <a-entity id="scene-models"></a-entity>
-
-      <!-- Маркер -->
-      <a-marker id="marker1" type="pattern" url="./assets/patt-marker.patt">
-        <!-- Временная модель, от которой возьмём координаты -->
-        <a-gltf-model
-          id="temp-model"
-          src="#model"
-          scale="1 1 1"
-          rotation="0 -90 0"
-          visible="false">
+      <!-- Первая метка -->
+      <a-entity id="target1" mindar-image-target="targetIndex: 0">
+        <a-gltf-model 
+          src="#model1-asset" 
+          position="0 0.1 0" 
+          scale="1 1 1" 
+          rotation="0 -90 0">
         </a-gltf-model>
-      </a-marker>
+      </a-entity>
+
+      <!-- Вторая метка -->
+      <a-entity id="target2" mindar-image-target="targetIndex: 1">
+        <a-gltf-model 
+          src="#model2-asset" 
+          position="0 0.1 0" 
+          scale="1 1 1" 
+          rotation="0 30 0">
+        </a-gltf-model>
+      </a-entity>
+
     </a-scene>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const marker = document.querySelector("#marker1");
-        const sceneModels = document.querySelector("#scene-models");
-        const tempModel = document.querySelector("#temp-model");
+        const sound1 = document.querySelector("#sound1");
+        const sound2 = document.querySelector("#sound2");
 
-        let placed = false;
+        const target1 = document.querySelector("#target1");
+        const target2 = document.querySelector("#target2");
 
-        marker.addEventListener("markerFound", () => {
-          if (placed) return;
+        target1.addEventListener("targetFound", () => {
+          sound1.play();
+        });
 
-          setTimeout(() => {
-            const obj = tempModel.object3D;
-            const pos = new THREE.Vector3();
-            const rot = new THREE.Quaternion();
-
-            obj.getWorldPosition(pos);
-            obj.getWorldQuaternion(rot);
-
-            const model = document.createElement("a-gltf-model");
-            model.setAttribute("src", "#model");
-            model.setAttribute("scale", "1 1 1");
-            model.setAttribute("visible", "true");
-
-            sceneModels.appendChild(model);
-            model.object3D.position.copy(pos);
-            model.object3D.quaternion.copy(rot);
-
-            placed = true;
-          }, 100);
+        target2.addEventListener("targetFound", () => {
+          sound2.play();
         });
       });
     </script>
