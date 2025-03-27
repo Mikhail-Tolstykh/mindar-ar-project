@@ -30,49 +30,31 @@
 
       <!-- Первая метка -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0">
-        <a-gltf-model 
-          id="model1"
-          src="#model1-asset" 
-          position="0 0.1 0" 
-          scale="0.5 0.5 0.5" 
-          rotation="0 -90 0"
+        <a-entity 
+          id="model1-container"
+          position="0 0.1 0"
+          scale="0.5 0.5 0.5"
           visible="false">
-          <a-animation
-            id="hide1"
-            attribute="scale"
-            from="0.5 0.5 0.5"
-            to="0 0 0"
-            dur="500"
-            begin="hide1">
-          </a-animation>
-        </a-gltf-model>
+          <a-gltf-model src="#model1-asset" rotation="0 -90 0"></a-gltf-model>
+        </a-entity>
       </a-entity>
 
       <!-- Вторая метка -->
       <a-entity id="target2" mindar-image-target="targetIndex: 1">
-        <a-gltf-model 
-          id="model2"
-          src="#model2-asset" 
-          position="0 0.1 0" 
-          scale="0.5 0.5 0.5" 
-          rotation="0 30 0"
+        <a-entity 
+          id="model2-container"
+          position="0 0.1 0"
+          scale="0.5 0.5 0.5"
           visible="false">
-          <a-animation
-            id="hide2"
-            attribute="scale"
-            from="0.5 0.5 0.5"
-            to="0 0 0"
-            dur="500"
-            begin="hide2">
-          </a-animation>
-        </a-gltf-model>
+          <a-gltf-model src="#model2-asset" rotation="0 30 0"></a-gltf-model>
+        </a-entity>
       </a-entity>
     </a-scene>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const model1 = document.querySelector("#model1");
-        const model2 = document.querySelector("#model2");
+        const model1 = document.querySelector("#model1-container");
+        const model2 = document.querySelector("#model2-container");
 
         const sound1 = document.querySelector("#sound1");
         const sound2 = document.querySelector("#sound2");
@@ -82,7 +64,7 @@
 
         target1.addEventListener("targetFound", () => {
           model1.setAttribute("visible", true);
-          model1.setAttribute("scale", "0.5 0.5 0.5"); // на случай повторного вызова
+          model1.setAttribute("scale", "0.5 0.5 0.5");
           sound1.play();
         });
 
@@ -93,14 +75,24 @@
         });
 
         sound1.addEventListener("ended", () => {
-          model1.emit("hide1");
+          model1.setAttribute("animation__hide", {
+            property: "scale",
+            to: "0 0 0",
+            dur: 500,
+            easing: "easeInOutQuad"
+          });
           setTimeout(() => {
             model1.setAttribute("visible", false);
           }, 600);
         });
 
         sound2.addEventListener("ended", () => {
-          model2.emit("hide2");
+          model2.setAttribute("animation__hide", {
+            property: "scale",
+            to: "0 0 0",
+            dur: 500,
+            easing: "easeInOutQuad"
+          });
           setTimeout(() => {
             model2.setAttribute("visible", false);
           }, 600);
