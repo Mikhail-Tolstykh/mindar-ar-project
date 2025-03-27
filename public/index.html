@@ -27,6 +27,9 @@
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
+      <!-- контейнер для отвязанных моделей -->
+      <a-entity id="scene-models"></a-entity>
+
       <!-- Первая метка -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0; autoHide: false">
         <a-gltf-model 
@@ -66,18 +69,50 @@
         const model1a = document.querySelector("#model1a");
         const model1b = document.querySelector("#model1b");
         const model2 = document.querySelector("#model2");
+        const sceneModels = document.querySelector("#scene-models");
 
         const target1 = document.querySelector("#target1");
         const target2 = document.querySelector("#target2");
 
+        let model1bDetached = false;
+
         target1.addEventListener("targetFound", () => {
-        model1a.setAttribute("visible", true);
-        model1b.setAttribute("visible", true);
-        });     
+            model1a.setAttribute("visible", true);
+            model1b.setAttribute("visible", true);
+
+            if (model1bDetached) return;
+
+            // Делаем это после одного кадра — чтобы успело отрисоваться
+            setTimeout(() => {
+              const obj = model1b.object3D;
+              const worldPos = new THREE.Vector3();
+              const worldRot = new THREE.Quaternion();
+
+              obj.getWorldPosition(worldPos);
+              obj.getWorldQuaternion(worldRot);
+
+              const newModel = document.createElement("a-gltf-model");
+              newModel.setAttribute("src", "#model2-asset");
+              newModel.setAttribute("scale", "1 1 1");
+              newModel.setAttribute("visible", "true");
+
+              sceneModels.appendChild(newModel);
+
+              newModel.object3D.position.copy(worldPos);
+              newModel.object3D.quaternion.copy(worldRot);
+
+              model1b.parentNode.removeChild(model1b); // удаляем из метки
+              model1bDetached = true;
+            }, 300);
+          });   
 
         target2.addEventListener("targetFound", () => {
           model2.setAttribute("visible", true);
         });
+
+        
+
+        
 
         // НЕ скрываем при потере метки
         target1.addEventListener("targetLost", () => {});
