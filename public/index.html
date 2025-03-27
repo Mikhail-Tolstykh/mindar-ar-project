@@ -19,8 +19,11 @@
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
+        <!-- Модели -->
         <a-asset-item id="model1" src="./assets/model1.glb"></a-asset-item>
         <a-asset-item id="model2" src="./assets/model2.glb"></a-asset-item>
+
+        <!-- Звуки -->
         <audio id="sound1" src="./assets/sound1.mp3"></audio>
         <audio id="sound2" src="./assets/sound2.mp3"></audio>
       </a-assets>
@@ -50,7 +53,6 @@
           visible="false">
         </a-gltf-model>
       </a-entity>
-
     </a-scene>
 
     <script>
@@ -64,40 +66,27 @@
         const target1 = document.querySelector("#target1");
         const target2 = document.querySelector("#target2");
 
-        let model1Ready = false;
-        let model2Ready = false;
-
-        model1.addEventListener("model-loaded", () => {
-          model1Ready = true;
-        });
-
-        model2.addEventListener("model-loaded", () => {
-          model2Ready = true;
-        });
-
         target1.addEventListener("targetFound", () => {
-          if (model1Ready) {
-            model1.setAttribute("visible", true);
-            sound1.play();
+          model1.setAttribute("visible", true);
+          sound1.currentTime = 0;
+          sound1.play();
 
-            sound1.onended = () => {
-              model1.setAttribute("visible", false);
-            };
-          }
+          sound1.onended = () => {
+            model1.setAttribute("visible", false);
+          };
         });
 
         target2.addEventListener("targetFound", () => {
-          if (model2Ready) {
-            model2.setAttribute("visible", true);
-            sound2.play();
+          model2.setAttribute("visible", true);
+          sound2.currentTime = 0;
+          sound2.play();
 
-            sound2.onended = () => {
-              model2.setAttribute("visible", false);
-            };
-          }
+          sound2.onended = () => {
+            model2.setAttribute("visible", false);
+          };
         });
 
-        // Не скрываем модель при потере метки
+        // НЕ скрываем модель при потере метки
         target1.addEventListener("targetLost", () => {});
         target2.addEventListener("targetLost", () => {});
       });
