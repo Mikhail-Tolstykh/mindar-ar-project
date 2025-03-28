@@ -22,161 +22,51 @@
         <!-- Модели -->
         <a-asset-item id="model1-asset" src="./assets/model1.glb"></a-asset-item>
         <a-asset-item id="model2-asset" src="./assets/model2.glb"></a-asset-item>
-        <a-asset-item id="model3-asset" src="./assets/model3.glb"></a-asset-item>
-        <a-asset-item id="model4-asset" src="./assets/model4.glb"></a-asset-item>
-        <a-asset-item id="model5-asset" src="./assets/model5.glb"></a-asset-item>
-        <a-asset-item id="model6-asset" src="./assets/model6.glb"></a-asset-item>
-        <a-asset-item id="model7-asset" src="./assets/model7.glb"></a-asset-item>
-        <a-asset-item id="model8-asset" src="./assets/model8.glb"></a-asset-item>
-        
+
         <!-- Звуки -->
         <audio id="sound1" src="./assets/sound1.mp3"></audio>
         <audio id="sound2" src="./assets/sound2.mp3"></audio>
-        <audio id="sound3" src="./assets/sound3.mp3"></audio>
-        <audio id="sound4" src="./assets/sound4.mp3"></audio>
-        <audio id="sound5" src="./assets/sound5.mp3"></audio>
-        <audio id="sound6" src="./assets/sound6.mp3"></audio>
-        <audio id="sound7" src="./assets/sound7.mp3"></audio>
-        <audio id="sound8" src="./assets/sound8.mp3"></audio>
-
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Метка 1 -->
+      <!-- Первая метка -->
       <a-entity id="target1" mindar-image-target="targetIndex: 0">
-        <a-entity 
-          id="model1-container"
-          position="0 0.1 0"
-          scale="0 0 0"
-          visible="false">
-          <a-gltf-model src="#model1-asset" rotation="0 -90 0"></a-gltf-model>
-        </a-entity>
+        <a-gltf-model 
+          src="#model1-asset" 
+          position="0 0.1 0" 
+          scale="1 1 1" 
+          rotation="0 -90 0">
+        </a-gltf-model>
       </a-entity>
 
-      <!-- Метка 2 -->
+      <!-- Вторая метка -->
       <a-entity id="target2" mindar-image-target="targetIndex: 1">
-        <a-entity 
-          id="model2-container"
-          position="0 0.1 0"
-          scale="0 0 0"
-          visible="false">
-          <a-gltf-model src="#model2-asset" rotation="0 30 0"></a-gltf-model>
-        </a-entity>
+        <a-gltf-model 
+          src="#model2-asset" 
+          position="0 0.1 0" 
+          scale="1 1 1" 
+          rotation="0 30 0">
+        </a-gltf-model>
       </a-entity>
+
     </a-scene>
-
-    <!-- Метка 1 -->
-    <a-entity id="target3" mindar-image-target="targetIndex: 0">
-      <a-entity 
-        id="model3-container"
-        position="0 0.1 0"
-        scale="0 0 0"
-        visible="false">
-        <a-gltf-model src="#model3-asset" rotation="0 -90 0"></a-gltf-model>
-      </a-entity>
-    </a-entity>
-
-    <!-- Метка 2 -->
-    <a-entity id="target4" mindar-image-target="targetIndex: 1">
-      <a-entity 
-        id="model4-container"
-        position="0 0.1 0"
-        scale="0 0 0"
-        visible="false">
-        <a-gltf-model src="#model4-asset" rotation="0 30 0"></a-gltf-model>
-      </a-entity>
-    </a-entity>
-  </a-scene>
-
-  <!-- Метка 1 -->
-  <a-entity id="target5" mindar-image-target="targetIndex: 0">
-    <a-entity 
-      id="model5-container"
-      position="0 0.1 0"
-      scale="0 0 0"
-      visible="false">
-      <a-gltf-model src="#model5-asset" rotation="0 -90 0"></a-gltf-model>
-    </a-entity>
-  </a-entity>
-
-  <!-- Метка 2 -->
-  <a-entity id="target6" mindar-image-target="targetIndex: 1">
-    <a-entity 
-      id="model6-container"
-      position="0 0.1 0"
-      scale="0 0 0"
-      visible="false">
-      <a-gltf-model src="#model6-asset" rotation="0 30 0"></a-gltf-model>
-    </a-entity>
-  </a-entity>
-  </a-scene>
-
-    <!-- Метка 1 -->
-  <a-entity id="target7" mindar-image-target="targetIndex: 0">
-    <a-entity 
-      id="model7-container"
-      position="0 0.1 0"
-      scale="0 0 0"
-      visible="false">
-      <a-gltf-model src="#model7-asset" rotation="0 -90 0"></a-gltf-model>
-    </a-entity>
-  </a-entity>
-
-  <!-- Метка 2 -->
-  <a-entity id="target8" mindar-image-target="targetIndex: 1">
-    <a-entity 
-      id="model8-container"
-      position="0 0.1 0"
-      scale="0 0 0"
-      visible="false">
-      <a-gltf-model src="#model8-asset" rotation="0 30 0"></a-gltf-model>
-    </a-entity>
-  </a-entity>
-  </a-scene>
-
-
-
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const numberOfTargets = 2; // 🔁 Укажи общее количество меток (можно увеличить)
+        const sound1 = document.querySelector("#sound1");
+        const sound2 = document.querySelector("#sound2");
 
-        for (let i = 1; i <= numberOfTargets; i++) {
-          const target = document.querySelector(`#target${i}`);
-          const model = document.querySelector(`#model${i}-container`);
-          const sound = document.querySelector(`#sound${i}`);
+        const target1 = document.querySelector("#target1");
+        const target2 = document.querySelector("#target2");
 
-          if (!target || !model || !sound) continue;
+        target1.addEventListener("targetFound", () => {
+          sound1.play();
+        });
 
-          // Появление
-          target.addEventListener("targetFound", () => {
-            model.setAttribute("visible", true);
-            model.removeAttribute("animation__hide"); // сбрасываем прошлое
-            model.setAttribute("animation__show", {
-              property: "scale",
-              from: "0 0 0",
-              to: "0.5 0.5 0.5",
-              dur: 500,
-              easing: "easeOutElastic"
-            });
-            sound.play();
-          });
-
-          // Исчезновение
-          sound.addEventListener("ended", () => {
-            model.removeAttribute("animation__show"); // сбрасываем
-            model.setAttribute("animation__hide", {
-              property: "scale",
-              to: "0 0 0",
-              dur: 500,
-              easing: "easeInOutQuad"
-            });
-            setTimeout(() => {
-              model.setAttribute("visible", false);
-            }, 600);
-          });
-        }
+        target2.addEventListener("targetFound", () => {
+          sound2.play();
+        });
       });
     </script>
   </body>
