@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Аксолотль-Квест1</title>
+    <title>Аксолотль-Квест</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -161,6 +161,17 @@
               dur: 500,
               easing: "easeOutElastic"
             });
+            // === Добавляем анимацию вращения ===
+            if (!model.querySelector("a-animation[rotation]")) { // чтобы не добавить повторно
+                const rotateAnim = document.createElement("a-animation");
+                rotateAnim.setAttribute("attribute", "rotation");
+                rotateAnim.setAttribute("dur", "3000");
+                rotateAnim.setAttribute("to", `0 ${15} 0`);
+                rotateAnim.setAttribute("direction", "alternate");
+                rotateAnim.setAttribute("repeat", "indefinite");
+                rotateAnim.setAttribute("easing", "easeInOutSine");
+                model.appendChild(rotateAnim);
+            }
             sound.play();
           });
 
