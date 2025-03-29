@@ -27,7 +27,7 @@
             background: #4CAF50;
             color: white;
             border-radius: 10px;
-            cursor: pointer;">Начать AR-квест (иногда портал может отключаться, тогда нужно переподключить его)</button>
+            cursor: pointer;">Открыть портал</button>
     </div>
 
     <a-scene
@@ -103,7 +103,11 @@
 
                     const model = document.createElement("a-gltf-model");
                     model.setAttribute("src", modelId);
-                    model.setAttribute("rotation", "0 -90 0");
+                    if (i === 5) {
+                            model.setAttribute("rotation", "0 -90 90"); // Поворот по оси Z на 90°
+                        } else {
+                            model.setAttribute("rotation", "0 -90 0");
+                        }
                     wrapper.appendChild(model);
 
                     // Анимация появления
