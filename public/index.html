@@ -167,13 +167,13 @@
 
   startButton.addEventListener("click", () => {
     // "Активируем" все аудио без реального воспроизведения
-    const anySound = document.querySelector("audio");
-    if (anySound) {
-      anySound.play().then(() => {
-        anySound.pause();
-        anySound.currentTime = 0;
-      }).catch(() => {});
-    }
+    const allSounds = document.querySelectorAll("audio");
+allSounds.forEach((sound) => {
+  sound.play().then(() => {
+    sound.pause();
+    sound.currentTime = 0;
+  }).catch(() => {});
+});
 
     startScreen.style.display = "none";
   }, { once: true });
