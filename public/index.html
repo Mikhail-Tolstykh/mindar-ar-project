@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Аксолотль-Квест</title>
+    <title>Аксолотль-Квест_</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -169,10 +169,11 @@
     // "Активируем" все аудио без реального воспроизведения
     const allSounds = document.querySelectorAll("audio");
 allSounds.forEach((sound) => {
-  sound.play().then(() => {
-    sound.pause();
-    sound.currentTime = 0;
-  }).catch(() => {});
+  try {
+    sound.load(); // Безопасно активирует звук
+  } catch (e) {
+    console.warn("Ошибка активации звука", e);
+  }
 });
 
     startScreen.style.display = "none";
