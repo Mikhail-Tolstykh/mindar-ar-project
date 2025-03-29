@@ -143,14 +143,11 @@
       document.addEventListener("DOMContentLoaded", () => {
 
         // --- FIX для iOS
-    document.addEventListener("click", () => {
-        document.querySelectorAll('audio').forEach(audio => {
-            audio.play().then(() => {
-                audio.pause();
-                audio.currentTime = 0;
-            }).catch(() => {});
-        });
-    }, { once: true });
+        document.addEventListener("click", () => {
+  document.querySelectorAll('audio').forEach(audio => {
+    audio.load(); // Просто подгружаем, не запускаем
+  });
+}, { once: true });
 
         const numberOfTargets = 8; // 🔁 Укажи общее количество меток (можно увеличить)
 
