@@ -1,133 +1,137 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <title>Аксолотль-Квест_</title>
+    <title>Загрузка портала</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
-      body, html { margin: 0; overflow: hidden; height: 100%; }
+        body, html { margin: 0; overflow: hidden; height: 100%; }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div id="start-screen" style="
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: #000; color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      font-family: sans-serif;">
-      <button id="start-button" style="
-        font-size: 1.5em;
-        padding: 1em 2em;
-        border: none;
-        background: #4CAF50;
-        color: white;
-        border-radius: 10px;
-        cursor: pointer;">Начать AR-квест</button>
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: #000; color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        font-family: sans-serif;">
+        <button id="start-button" style="
+            font-size: 1.5em;
+            padding: 1em 2em;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;">Начать AR-квест (иногда портал может отключаться, тогда нужно переподключить его)</button>
     </div>
 
     <a-scene
-      mindar-image="imageTargetSrc: ./assets/targets.mind; filterMinCF:0.001; filterBeta:0.01"
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights: true"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false">
+        mindar-image="imageTargetSrc: ./assets/targets.mind; filterMinCF:0.001; filterBeta:0.01"
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights: true"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
 
-      <a-assets>
-        <!-- Звуки -->
-        <audio id="sound1" src="./assets/sound1.mp3"></audio>
-        <audio id="sound2" src="./assets/sound2.mp3"></audio>
-        <audio id="sound3" src="./assets/sound3.mp3"></audio>
-        <audio id="sound4" src="./assets/sound4.mp3"></audio>
-        <audio id="sound5" src="./assets/sound5.mp3"></audio>
-        <audio id="sound6" src="./assets/sound6.mp3"></audio>
-        <audio id="sound7" src="./assets/sound7.mp3"></audio>
-        <audio id="sound8" src="./assets/sound8.mp3"></audio>
-      </a-assets>
+        <a-assets>
+            <!-- Модели -->
+            <a-asset-item id="model1-asset" src="./assets/model1.glb"></a-asset-item>
+            <a-asset-item id="model2-asset" src="./assets/model2.glb"></a-asset-item>
+            <a-asset-item id="model3-asset" src="./assets/model3.glb"></a-asset-item>
+            <a-asset-item id="model4-asset" src="./assets/model4.glb"></a-asset-item>
+            <a-asset-item id="model5-asset" src="./assets/model5.glb"></a-asset-item>
+            <a-asset-item id="model6-asset" src="./assets/model6.glb"></a-asset-item>
+            <a-asset-item id="model7-asset" src="./assets/model7.glb"></a-asset-item>
+            <a-asset-item id="model8-asset" src="./assets/model8.glb"></a-asset-item>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+            <!-- Звуки -->
+            <audio id="sound1" src="./assets/sound1.mp3"></audio>
+            <audio id="sound2" src="./assets/sound2.mp3"></audio>
+            <audio id="sound3" src="./assets/sound3.mp3"></audio>
+            <audio id="sound4" src="./assets/sound4.mp3"></audio>
+            <audio id="sound5" src="./assets/sound5.mp3"></audio>
+            <audio id="sound6" src="./assets/sound6.mp3"></audio>
+            <audio id="sound7" src="./assets/sound7.mp3"></audio>
+            <audio id="sound8" src="./assets/sound8.mp3"></audio>
+        </a-assets>
 
-      <!-- Контейнеры для меток -->
-      <a-entity id="target1" mindar-image-target="targetIndex: 0"></a-entity>
-      <a-entity id="target2" mindar-image-target="targetIndex: 1"></a-entity>
-      <a-entity id="target3" mindar-image-target="targetIndex: 2"></a-entity>
-      <a-entity id="target4" mindar-image-target="targetIndex: 3"></a-entity>
-      <a-entity id="target5" mindar-image-target="targetIndex: 4"></a-entity>
-      <a-entity id="target6" mindar-image-target="targetIndex: 5"></a-entity>
-      <a-entity id="target7" mindar-image-target="targetIndex: 6"></a-entity>
-      <a-entity id="target8" mindar-image-target="targetIndex: 7"></a-entity>
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <!-- Метки -->
+        <a-entity id="target1" mindar-image-target="targetIndex: 0"></a-entity>
+        <a-entity id="target2" mindar-image-target="targetIndex: 1"></a-entity>
+        <a-entity id="target3" mindar-image-target="targetIndex: 2"></a-entity>
+        <a-entity id="target4" mindar-image-target="targetIndex: 3"></a-entity>
+        <a-entity id="target5" mindar-image-target="targetIndex: 4"></a-entity>
+        <a-entity id="target6" mindar-image-target="targetIndex: 5"></a-entity>
+        <a-entity id="target7" mindar-image-target="targetIndex: 6"></a-entity>
+        <a-entity id="target8" mindar-image-target="targetIndex: 7"></a-entity>
     </a-scene>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const startButton = document.querySelector("#start-button");
-        const startScreen = document.querySelector("#start-screen");
+        document.addEventListener("DOMContentLoaded", () => {
+            const startButton = document.querySelector("#start-button");
+            const startScreen = document.querySelector("#start-screen");
 
-        startButton.addEventListener("click", () => {
-          document.querySelectorAll("audio").forEach(audio => {
-            try {
-              audio.load();
-            } catch (e) {}
-          });
-          startScreen.style.display = "none";
-        }, { once: true });
+            startButton.addEventListener("click", () => {
+                document.querySelectorAll("audio").forEach(audio => {
+                    try { audio.load(); } catch (e) {}
+                });
+                startScreen.style.display = "none";
+            }, { once: true });
 
-        const numberOfTargets = 8;
+            const numberOfTargets = 8;
 
-        for (let i = 1; i <= numberOfTargets; i++) {
-          const target = document.querySelector(`#target${i}`);
-          const sound = document.querySelector(`#sound${i}`);
-          const modelPath = `./assets/model${i}.glb`;
+            for (let i = 1; i <= numberOfTargets; i++) {
+                const target = document.querySelector(`#target${i}`);
+                const sound = document.querySelector(`#sound${i}`);
+                const modelId = `#model${i}-asset`;
 
-          if (!target || !sound) continue;
+                if (!target || !sound) continue;
 
-          target.addEventListener("targetFound", () => {
-            if (target.querySelector("a-entity")) return; // уже есть модель
+                target.addEventListener("targetFound", () => {
+                    if (target.querySelector("a-gltf-model")) return;
 
-            const wrapper = document.createElement("a-entity");
-            wrapper.setAttribute("position", "0 0.1 -0.5");
-            wrapper.setAttribute("scale", "0 0 0");
-            wrapper.setAttribute("visible", "true");
+                    const wrapper = document.createElement("a-entity");
+                    wrapper.setAttribute("position", "0 0.1 -0.5");
+                    wrapper.setAttribute("scale", "0 0 0");
+                    wrapper.setAttribute("visible", "true");
 
-            const model = document.createElement("a-gltf-model");
-            model.setAttribute("src", modelPath);
-            model.setAttribute("rotation", "0 -90 0");
-            wrapper.appendChild(model);
+                    const model = document.createElement("a-gltf-model");
+                    model.setAttribute("src", modelId);
+                    model.setAttribute("rotation", "0 -90 0");
+                    wrapper.appendChild(model);
 
-            // Анимация появления
-            wrapper.setAttribute("animation__show", {
-              property: "scale",
-              from: "0 0 0",
-              to: "2 2 2",
-              dur: 500,
-              easing: "easeOutElastic"
-            });
+                    // Анимация появления
+                    wrapper.setAttribute("animation__show", {
+                        property: "scale",
+                        from: "0 0 0",
+                        to: "2 2 2",
+                        dur: 500,
+                        easing: "easeOutElastic"
+                    });
 
-            // Вращение
-           
+                    target.appendChild(wrapper);
+                    sound.play();
 
-            target.appendChild(wrapper);
-            sound.play();
-
-            sound.addEventListener("ended", () => {
-              // Анимация исчезновения
-              wrapper.setAttribute("animation__hide", {
-                property: "scale",
-                to: "0 0 0",
-                dur: 500,
-                easing: "easeInOutQuad"
-              });
-              setTimeout(() => {
-                if (target.contains(wrapper)) target.removeChild(wrapper);
-              }, 600);
-            }, { once: true }); // удаляем обработчик после срабатывания
-          });
-        }
-      });
+                    sound.addEventListener("ended", () => {
+                        wrapper.setAttribute("animation__hide", {
+                            property: "scale",
+                            to: "0 0 0",
+                            dur: 500,
+                            easing: "easeInOutQuad"
+                        });
+                        setTimeout(() => {
+                            if (target.contains(wrapper)) target.removeChild(wrapper);
+                        }, 600);
+                    }, { once: true });
+                });
+            }
+        });
     </script>
-  </body>
+</body>
 </html>
